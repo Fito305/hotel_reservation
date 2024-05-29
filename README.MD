@@ -14,7 +14,7 @@
 ### Mongodb driver
 Doucmentation
 ```
-https://mongodb.com/docs/drivers/go/current/quicl-start
+https://mongodb.com/docs/drivers/go/current/quick-start
 ````
 
 Installing mongodb client
