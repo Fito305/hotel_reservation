@@ -8,7 +8,6 @@ import (
 	"github.com/Fito305/hotel-reservation/db"
 	// "github.com/Fito305/hotel-reservation/types" // not used
 	"github.com/Fito305/hotel-reservation/api"
-	"github.com/Fito305/hotel-reservation/api/middleware"
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -17,10 +16,7 @@ import (
 )
 
 var config = fiber.Config{
-	//Override default error handler
-	ErrorHandler: func(c *fiber.Ctx, err error) error {
-		return c.JSON(map[string]string{"error": err.Error()})
-	},
+	ErrorHandler: api.ErrorHandler,
 }
 
 func main() {
@@ -50,8 +46,8 @@ func main() {
 		bookingHandler = api.NewBookingHandler(store)
 		app            = fiber.New(config)
 		auth           = app.Group("/api")
-		apiv1          = app.Group("/api/v1", middleware.JWTAuthentication(userStore)) // *** We added the decorator so we have to call the function, pass in the userStore and it'll return the handler we need.
-		admin          = apiv1.Group("/admin", middleware.AdminAuth)
+		apiv1          = app.Group("/api/v1", api.JWTAuthentication(userStore)) // *** We added the decorator so we have to call the function, pass in the userStore and it'll return the handler we need.
+		admin          = apiv1.Group("/admin", api.AdminAuth)
 	)
 
 	// auth
